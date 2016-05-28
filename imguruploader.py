@@ -1,3 +1,8 @@
+import requests
+import base64
+# import pprint
+
+
 def get_pin(id):
     # resp = response type = pin
     # state = non-important in this context
@@ -38,6 +43,35 @@ def exchange_pin_for_tokens(id, secret, pin):
     return a_token, r_token
 
 
+def upload_image_anon(id, image_url):
+    upload_url = r"https://api.imgur.com/3/upload"
+
+    headers = {
+        "authorization": "Client-ID " + id
+    }
+
+    # Possible parameters:
+    #   album
+    #   type (binary file, base64, or url)
+    #   name
+    #   title
+    #   description
+    payload = {
+        "image": image_url,
+        "type": "base64",
+        "title": "Works!"
+    }
+
+    r = requests.post(upload_url, data=payload, headers=headers)
+    j = r.json()
+
+    # print("The UploadImage API response: ")
+    # pprint.pprint(j)
+
+    uploaded_url = j['data']['link']
+    print("The uploaded image URL is: {0}".format(uploaded_url))
+
+
 def upload_image(a_token, image_url):
     upload_url = r"https://api.imgur.com/3/upload"
 
@@ -74,6 +108,11 @@ if __name__ == '__main__':
     client_id = '42c05ed32823466'
     client_secret = 'be61acf856ef14b129ff932401f740b0bc0676d7'
 
+    # Step 0: Test Anonymous Upload
+    with open("cat.jpeg", "rb") as image_file_anon:
+        encoded_string_anon = base64.b64encode(image_file_anon.read())
+        upload_image_anon(client_id, encoded_string_anon)
+
     # Step 1: Have user Get Pin
     get_pin(client_id)
     user_pin = input("Paste in pin from link and hit enter: ")
@@ -85,3 +124,4 @@ if __name__ == '__main__':
     with open("22upload.jpg", "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
         upload_image(access_token, encoded_string)
+
