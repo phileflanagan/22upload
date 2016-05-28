@@ -1,6 +1,7 @@
 import requests
 import base64
 import clientinfo
+import webbrowser
 # import pprint
 
 
@@ -14,8 +15,8 @@ def get_pin(id):
     pin_url = url.format(cid=id, resp=resp, app_state=state)
 
     # instruct user to grab pin from url
-    print("browse to the following URL and copy the pin:")
-    print(pin_url)
+    print("Your browser will open, copy the pin.")
+    webbrowser.open(pin_url)
 
     return pin_url
 
