@@ -1,5 +1,6 @@
 import requests
 import base64
+import clientinfo
 # import pprint
 
 
@@ -105,8 +106,8 @@ def upload_image(a_token, image_url):
 # # # # # # # MAIN CODE RUNNING # # # # # # #
 #############################################
 if __name__ == '__main__':
-    client_id = '42c05ed32823466'
-    client_secret = 'be61acf856ef14b129ff932401f740b0bc0676d7'
+    client_id = clientinfo.client_id
+    client_secret = clientinfo.client_secret
 
     # Step 0: Test Anonymous Upload
     with open("cat.jpeg", "rb") as image_file_anon:
